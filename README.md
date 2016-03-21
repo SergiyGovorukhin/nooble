@@ -25,9 +25,13 @@ IDE
 
 Quick start with gradle:
 
-    unix:  ./gradlew build
     win:    gradlew build
+    unix:  ./gradlew build
 
+Important: on unix you may need to add permissions to gradlew:
+
+    chmod +x gradlew
+ 
 Launch:
 
     java -jar build\libs\nooble.jar
