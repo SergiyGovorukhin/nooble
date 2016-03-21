@@ -48,7 +48,6 @@ public class NoobleApplication extends SpringBootServletInitializer {
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
-		servletContext.addListener(new SessionListener());
 	}
 
 	/**
