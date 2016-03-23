@@ -4,16 +4,20 @@ import com.ghost.NoobleApplication;
 import com.ghost.lucene.LuceneConstants;
 import com.ghost.lucene.index.Indexer;
 import com.ghost.lucene.LuceneProperties;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.Fields;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.highlight.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,15 +29,19 @@ import java.util.Collection;
 @Component
 public class Searcher {
 
-    private IndexSearcher indexSearcher;
-    private DirectoryReader directoryReader;
-    private TopScoreDocCollector collector;
-
     @Autowired
     private LuceneProperties luceneProperties;
 
     @Autowired
     private Indexer indexer;
+
+    private IndexSearcher indexSearcher;
+    private DirectoryReader directoryReader;
+    private TopScoreDocCollector collector;
+    private ScoreDoc[] hits;
+    private Analyzer analyzer;
+    private Query query;
+    private Highlighter highlighter;
 
     public Searcher() {}
 
@@ -68,10 +76,37 @@ public class Searcher {
         DirectoryReader newDirectoryReader = DirectoryReader.openIfChanged(directoryReader);
         directoryReader = newDirectoryReader == null ? directoryReader : newDirectoryReader;
         indexSearcher = new IndexSearcher(directoryReader);
-        QueryParser queryParser = new QueryParser(LuceneConstants.CONTENTS, new StandardAnalyzer());
-        Query query = queryParser.parse(queryString);
+        analyzer = new StandardAnalyzer();
+        QueryParser queryParser = new QueryParser(LuceneConstants.CONTENTS, analyzer);
+        query = queryParser.parse(queryString);
         collector = TopScoreDocCollector.create(luceneProperties.getSearch().getMax());
         indexSearcher.search(query, collector);
+        hits = collector.topDocs().scoreDocs;
+    }
+
+    public Collection<String> getFragments(String queryString) throws IOException {
+        Collection<String> fragments = new ArrayList<>();
+        Formatter htmlFormatter = new SimpleHTMLFormatter();
+        highlighter = new Highlighter(htmlFormatter, new QueryScorer(query));
+        for (ScoreDoc hit : hits) {
+            fragments.add(getFragment(hit.doc));
+        }
+        NoobleApplication.log.info("Fragment size: {}", fragments.size());
+        return fragments;
+    }
+
+    public String getFragment(int id) throws IOException {
+        Document doc = indexSearcher.doc(id);
+        String text = doc.get(LuceneConstants.FRAGMENT);
+        Fields fields = directoryReader.getTermVectors(id);
+        TokenStream tokenStream = TokenSources.getTermVectorTokenStreamOrNull(LuceneConstants.FRAGMENT,
+                fields, highlighter.getMaxDocCharsToAnalyze() - 1);
+        try {
+            return highlighter.getBestFragments(tokenStream, text, 3, "...");
+        } catch (InvalidTokenOffsetsException e) {
+            NoobleApplication.log.error("Invalid Token Offsets for doc: {}", id);
+        }
+        return "";
     }
 
     /**
@@ -79,8 +114,7 @@ public class Searcher {
      * @return collection of found documents
      * @throws IOException
      */
-    public Collection<Document> getHits() throws IOException {
-        ScoreDoc[] hits = collector.topDocs().scoreDocs;
+    public Collection<Document> getDocs() throws IOException {
         NoobleApplication.log.info("Docs found: {}", getTotalHits());
         Collection<Document> documents = new ArrayList<>();
         for (ScoreDoc hit : hits) {

@@ -12,14 +12,14 @@ public class SearchDocument {
     private String title;
 
     @JsonView(View.Public.class)
-    private String contents;
+    private String fragment;
 
     @JsonView(View.Public.class)
     private String path;
 
-    public SearchDocument(String title, String contents, String path) {
+    public SearchDocument(String title, String fragment, String path) {
         this.title = title;
-        this.contents = contents;
+        this.fragment = fragment;
         this.path = path;
     }
 
@@ -27,8 +27,8 @@ public class SearchDocument {
         return title;
     }
 
-    public String getContents() {
-        return contents;
+    public String getFragment() {
+        return fragment;
     }
 
     public String getPath() {
@@ -39,8 +39,8 @@ public class SearchDocument {
         this.title = title;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public void setFragment(String fragment) {
+        this.fragment = fragment;
     }
 
     public void setPath(String path) {

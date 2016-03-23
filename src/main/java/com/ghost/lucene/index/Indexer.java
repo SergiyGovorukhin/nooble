@@ -54,6 +54,7 @@ public class Indexer {
             NoobleApplication.log.error("Error initializing index directory: {}", e);
             throw new RuntimeException("Error initializing index directory!");
         }
+        NoobleApplication.log.info("Index directory: {}", indexDirectory);
         Analyzer analyzer = new StandardAnalyzer();
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
@@ -92,7 +93,7 @@ public class Indexer {
 
 
     /**
-     * Builds the Document from a raw content file. Indexes file contents, name and path.
+     * Builds the Document from a raw contents file. Indexes file contents, name and path.
      * @param file with raw data (plain text file)
      * @return ready to analyze Document
      * @throws IOException
@@ -110,16 +111,16 @@ public class Indexer {
     }
 
     /**
-     * Builds the Document from a raw content. Indexes contents, file name, link and title.
-     * @param content of raw data (plain text)
+     * Builds the Document from a raw contents. Indexes contents, file name, link and title.
+     * @param contents of raw data (plain text)
      * @param name of the Document
      * @param path of the Document
      * @param title of the Document
      * @return ready to analyze Document
      */
-    private Document getDocument(String content, String name, String path, String title) {
+    private Document getDocument(String contents, String name, String path, String title) {
         Document document = new Document();
-        document.add(new TextField(LuceneConstants.CONTENTS, new StringReader(content)));
+        document.add(new TextField(LuceneConstants.CONTENTS, new StringReader(contents)));
         document.add(new StringField(LuceneConstants.SOURCE_TITLE, title, Field.Store.YES));
         document.add(new StringField(LuceneConstants.SOURCE_NAME, name, Field.Store.YES));
         document.add(new StringField(LuceneConstants.SOURCE_PATH, path, Field.Store.YES));
@@ -139,15 +140,15 @@ public class Indexer {
 
     /**
      * Indexes built Document
-     * @param content of the source to be indexed
+     * @param contents of the source to be indexed
      * @param name of the source
      * @param path of the source
      * @param title of the source
      * @throws IOException
      */
-    public void indexSource(String content, String name, String path, String title) throws IOException{
+    public void indexSource(String contents, String name, String path, String title) throws IOException{
         NoobleApplication.log.info("Indexing: {}", path);
-        Document document = getDocument(content, name, path, title);
+        Document document = getDocument(contents, name, path, title);
         // TODO: avoid document duplicating while indexing or searching?
         indexWriter.updateDocument(new Term(name), document);
 //        indexWriter.addDocument(document);

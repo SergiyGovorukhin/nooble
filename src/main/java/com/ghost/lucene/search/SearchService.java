@@ -3,6 +3,7 @@ package com.ghost.lucene.search;
 import com.ghost.lucene.LuceneConstants;
 import com.ghost.lucene.LuceneProperties;
 import com.ghost.lucene.LuceneUtility;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,15 +53,17 @@ public class SearchService {
         long startTime = System.currentTimeMillis();
         resultDocs.clear();
         searcher.search(queryString);
-        searcher.getHits()
+        searcher.getDocs()
                 .stream()
-                .forEach(doc -> {
-                    String contents = doc.get(LuceneConstants.CONTENTS);
-                    String path = doc.get(LuceneConstants.SOURCE_PATH);
-                    String title = doc.get(LuceneConstants.SOURCE_TITLE);
-                    resultDocs.add(new SearchDocument(title, contents, path));
-                });
+                .forEach(doc -> resultDocs.add(toSearchDocument(doc)));
         searchTime = System.currentTimeMillis() - startTime;
+    }
+
+    public SearchDocument toSearchDocument(Document document) {
+        String title = document.get(LuceneConstants.SOURCE_TITLE);
+        String fragment = document.get(LuceneConstants.FRAGMENT);
+        String path = document.get(LuceneConstants.SOURCE_PATH);
+        return new SearchDocument(title, fragment, path);
     }
 
     public String getSearchTimeString() {

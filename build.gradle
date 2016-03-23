@@ -43,6 +43,7 @@ dependencies {
 	compile('org.apache.lucene:lucene-core:5.5.0')
 	compile('org.apache.lucene:lucene-analyzers-common:5.5.0')
 	compile('org.apache.lucene:lucene-queryparser:5.5.0')
+	compile('org.apache.lucene:lucene-highlighter:5.5.0')
 	compile('org.jsoup:jsoup:1.8.3')
 	compile('org.springframework.boot:spring-boot-starter-web') {
 		exclude module: 'org.springframework.boot:spring-boot-starter-logging'
