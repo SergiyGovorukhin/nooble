@@ -8,11 +8,8 @@ public class OSValidator {
     private static String OS = System.getProperty("os.name").toLowerCase();
 
     public static OSType getOSType() {
-        if (isLinux()) return OSType.LIN;
-        if (isMac()) return OSType.MAC;
-        if (isSolaris()) return OSType.SUN;
-        if (isWindows()) return OSType.WIN;
         if (isUnix()) return OSType.UNIX;
+        if (isWindows()) return OSType.WIN;
         return OSType.UNKNOWN;
     }
 
@@ -34,9 +31,9 @@ public class OSValidator {
 
     public static boolean isUnix() {
         return     OS.contains("nix")
-                || OS.contains("nux")
                 || OS.contains("aix")
-                || OS.contains("sun")
-                || OS.contains("mac");
+                || isLinux()
+                || isMac()
+                || isSolaris();
     }
 }
