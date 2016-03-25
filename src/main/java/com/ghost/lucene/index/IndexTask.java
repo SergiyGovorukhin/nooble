@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -59,21 +58,23 @@ public class IndexTask implements Callable<Integer> {
                 .stream()
                 .forEach(link -> tasks.add(new IndexTask(link, indexer, depth, numberOfThreads)));
 
+        final int[] errors = {0};
         int indexed = executorService.invokeAll(tasks)
                 .stream()
                 .mapToInt(future -> {
-                    Integer num = 0;
+                    Integer indexedCount = 0;
                     try {
-                        num = future.get();
+                        indexedCount = future.get();
                     } catch (Exception e) {
-                        NoobleApplication.log.error("Exception future get: {}", num);
+                        errors[0]++;
                     }
-                    return num == null ? 0: num;
+                    return indexedCount == null ? 0: indexedCount;
                 })
                 .sum();
 
         executorService.shutdown();
-        NoobleApplication.log.info("Indexed: " + indexed);
+        NoobleApplication.log.info("Not indexed (errors): {}", errors[0]);
+        NoobleApplication.log.info("Indexed: {}", indexed);
         return indexed;
     }
 
