@@ -143,7 +143,6 @@ public class Indexer {
      * @throws IOException
      */
     public void indexSource(String contents, String name, String path, String title) throws IOException{
-        NoobleApplication.log.info("Indexing: {}", path);
         Document document = getDocument(contents, name, path, title);
         // TODO: avoid document duplicating while indexing or searching?
 //        indexWriter.updateDocument(new Term(name), document);

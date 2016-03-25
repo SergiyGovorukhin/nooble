@@ -51,7 +51,8 @@ public class IndexTask implements Callable<Integer> {
     private int index(AbstractPage page) throws IOException, InterruptedException {
         depth--;
         Collection<URL> links = page.getLinks();
-        NoobleApplication.log.info("Link count: " + links.size());
+        NoobleApplication.log.info("[depth: {}] Indexing source: {}", depth, page.getUrl().toString());
+        NoobleApplication.log.info("Link count     : {}", links.size());
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         Collection<Callable<Integer>> tasks = new HashSet<>();
         links
@@ -73,7 +74,9 @@ public class IndexTask implements Callable<Integer> {
                 .sum();
 
         executorService.shutdown();
-        NoobleApplication.log.info("Not indexed (errors): {}", errors[0]);
+        NoobleApplication.log.info("[Depth: {}] Source: {}", depth, page.getUrl().toString());
+        NoobleApplication.log.info("Links  : {}", links.size());
+        NoobleApplication.log.info("Errors : {}", errors[0]);
         NoobleApplication.log.info("Indexed: {}", indexed);
         return indexed;
     }

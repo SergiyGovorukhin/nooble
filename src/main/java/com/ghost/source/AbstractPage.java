@@ -8,7 +8,10 @@ public abstract class AbstractPage {
 
     protected URL url;
 
-    public AbstractPage() {
+    public AbstractPage() {}
+
+    public URL getUrl() {
+        return url;
     }
 
     /**
