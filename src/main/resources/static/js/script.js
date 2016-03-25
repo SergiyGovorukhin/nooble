@@ -1,14 +1,15 @@
 function showValue(newValue){
-    document.getElementById("range-value").innerHTML = newValue;
+    $("#range-value").html(newValue);
 }
 
 function showStatus(value){
     clearStatus();
-    document.getElementById("status").innerHTML = value;
+    var $status = $("<div>").attr("class", "index-process").html(value);
+    $("#status").html($status);
 }
 
 function clearStatus(){
-    document.getElementById("status").innerHTML = "";
+    $("#status").html("");
 }
 
 $(document).on("click", "#view-more", function(event) {

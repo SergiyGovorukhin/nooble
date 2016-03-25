@@ -81,6 +81,12 @@ div {
     width: 50px;
 }
 
+.index-process {
+    background: url(/img/indexing.gif) no-repeat;
+    height: 32px;
+    width: 32px;
+}
+
 .result-text {
     color: #808080;
     font-family: arial,sans-serif;
