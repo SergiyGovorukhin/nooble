@@ -50,7 +50,7 @@
                             <a href="${page.path}">${page.title}</a>
                         </h3>
                         <div class="page-path">${page.path}</div>
-                        <div class="page-preview"><#--${page.get("preview")}--></div>
+                        <div class="page-fragment"><${page.fragment}</div>
                         <br>
                     </#list>
                 </#if>

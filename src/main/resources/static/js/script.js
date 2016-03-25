@@ -40,10 +40,10 @@ function display(results) {
     var $div = $("<div>").appendTo($("#result-list"));
     $.each(results, function(index, doc) {
         var $h3 = $("<h3>").attr("class","page-title").appendTo($div);
-        $("<a>").attr("href",doc.path).text(doc.title).appendTo($h3)
-        $("<div>").attr("class","page-path").text(doc.path).appendTo($div)
-//                $("<div>").attr("class","page-preview").text(doc.content).appendTo($div)
-        $("<br>").appendTo($div)
+        $("<a>").attr("href",doc.path).text(doc.title).appendTo($h3);
+        $("<div>").attr("class","page-path").text(doc.path).appendTo($div);
+        $("<div>").attr("class","page-fragment").text(doc.fragment).appendTo($div);
+        $("<br>").appendTo($div);
     });
 }
 

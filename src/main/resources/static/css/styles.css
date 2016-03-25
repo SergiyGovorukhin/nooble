@@ -7,23 +7,36 @@ a:link, a:visited, a:active {
     color: #1a0dab;
 }
 
+.term {
+    font-weight: bold;
+    background-color: #FFFF00;
+}
+
 #result-list h3 {
     font-size: 18px;
 }
 
 #result-list {
     margin-top: 20px;
+    max-width: 42em;
 }
 
 .page-title {
-    margin: 0px;
+    margin: 0;
 }
 
 .page-path {
     font-size: 14px;
     color: #006621;
     font-style: normal;
-    margin: 0px;
+    margin: 0;
+}
+
+.page-fragment {
+    color: #545454;
+    line-height: 1.4;
+    word-wrap: break-word;
+    font-size: small;
 }
 
 .nooble {
@@ -37,7 +50,7 @@ a:link, a:visited, a:active {
 }
 
 .nooble-little {
-    font: bold normal 30px "Candara";
+    font: bold 30px "Candara";
     color: #39a0ff;
     padding: 5px 10px;
     margin: 5px 0;
@@ -129,7 +142,7 @@ label input {
 
 /* Set input background color when auto-filling text  */
 #nooble-input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    -webkit-box-shadow: 0 0 0 1000px white inset;
 }
 
 #nooble-input {

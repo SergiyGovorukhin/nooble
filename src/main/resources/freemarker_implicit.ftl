@@ -1,5 +1,8 @@
 [#ftl]
 [#-- @implicitly included --]
+[#-- @ftlvariable name="start" type="java.lang.String" file="templates/searchResult.ftl" --]
+[#-- @ftlvariable name="searchTime" type="java.lang.String" file="templates/searchResult.ftl" --]
+[#-- @ftlvariable name="statusError" type="java.lang.String" file="templates/searchResult.ftl" --]
 [#-- @ftlvariable name="indexTime" type="java.lang.String" file="templates/message.ftl" --]
 [#-- @ftlvariable name="page.content" type="java.lang.String" file="templates/searchResult.ftl" --]
 [#-- @ftlvariable name="query" type="java.lang.String" file="templates/message.ftl" --]

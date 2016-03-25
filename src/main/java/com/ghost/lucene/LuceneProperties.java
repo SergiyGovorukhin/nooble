@@ -98,6 +98,11 @@ public class LuceneProperties {
 
         private int max;
         private int perPage;
+        private int FragmentSize;
+        private int maxFragments;
+        private String fragmentSeparator;
+        private String preFormat;
+        private String postFormat;
 
         public int getMax() {
             return max;
@@ -113,6 +118,46 @@ public class LuceneProperties {
 
         public void setPerPage(int perPage) {
             this.perPage = perPage;
+        }
+
+        public String getPreFormat() {
+            return preFormat;
+        }
+
+        public void setPreFormat(String preFormat) {
+            this.preFormat = preFormat;
+        }
+
+        public String getPostFormat() {
+            return postFormat;
+        }
+
+        public void setPostFormat(String postFormat) {
+            this.postFormat = postFormat;
+        }
+
+        public int getFragmentSize() {
+            return FragmentSize;
+        }
+
+        public void setFragmentSize(int fragmentSize) {
+            FragmentSize = fragmentSize;
+        }
+
+        public int getMaxFragments() {
+            return maxFragments;
+        }
+
+        public void setMaxFragments(int maxFragments) {
+            this.maxFragments = maxFragments;
+        }
+
+        public String getFragmentSeparator() {
+            return fragmentSeparator;
+        }
+
+        public void setFragmentSeparator(String fragmentSeparator) {
+            this.fragmentSeparator = fragmentSeparator;
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.ghost.lucene.search;
 
-import com.ghost.lucene.LuceneConstants;
 import com.ghost.lucene.LuceneProperties;
 import com.ghost.lucene.LuceneUtility;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,22 +28,23 @@ public class SearchService {
     private int docsPerPage;
     private Collection<SearchDocument> resultDocs = new ArrayList<>();
 
-    /**
-     * Queries sent during session
-     */
+    /** Queries sent during session */
     private Collection<String> sentQueries = new HashSet<>();
 
     public SearchService() {}
+
+    public Collection<String> getSentQueries() {
+        return sentQueries;
+    }
 
     @PostConstruct
     public void init() {
         docsPerPage = luceneProperties.getSearch().getPerPage();
     }
 
-
     /**
-     * Call this method to start index page from specified URL.
-     * @param queryString to find
+     * Call this method to start specified URL searching
+     * @param queryString query to find
      * @throws IOException
      */
     public void search(String queryString) throws IOException, ParseException {
@@ -53,17 +52,8 @@ public class SearchService {
         long startTime = System.currentTimeMillis();
         resultDocs.clear();
         searcher.search(queryString);
-        searcher.getDocs()
-                .stream()
-                .forEach(doc -> resultDocs.add(toSearchDocument(doc)));
+        resultDocs = searcher.getSearchDocs();
         searchTime = System.currentTimeMillis() - startTime;
-    }
-
-    public SearchDocument toSearchDocument(Document document) {
-        String title = document.get(LuceneConstants.SOURCE_TITLE);
-        String fragment = document.get(LuceneConstants.FRAGMENT);
-        String path = document.get(LuceneConstants.SOURCE_PATH);
-        return new SearchDocument(title, fragment, path);
     }
 
     public String getSearchTimeString() {
@@ -87,10 +77,7 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
-    public Collection<String> getSentQueries() {
-        return sentQueries;
-    }
-
+    /** Resets value of showed document count  */
     public int getStart() {
         return searcher.getTotalHits() > docsPerPage ? docsPerPage : 0;
     }
