@@ -70,11 +70,8 @@ public class Searcher {
             throw new RuntimeException(e);
         }
         analyzer = new StandardAnalyzer();
-/*
         formatter = new SimpleHTMLFormatter(luceneProperties.getSearch().getPreFormat(),
                 luceneProperties.getSearch().getPostFormat());
-*/
-        formatter = new SimpleHTMLFormatter("<span class=\"term\">", "</span>");
         fragmenter = new SimpleFragmenter(luceneProperties.getSearch().getFragmentSize());
     }
 
