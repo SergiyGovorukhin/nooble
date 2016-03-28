@@ -3,13 +3,18 @@ function showValue(newValue){
 }
 
 function showStatus(value){
-    clearStatus();
-    var $status = $("<div>").attr("class", "index-process").html(value);
-    $("#status").html($status);
+    clear("#status");
+    var $status = $("<div>").appendTo($("#status"));
+    $("<div>").attr("class", "index-process").appendTo($status);
+    $("<span>").text(value).appendTo($status);
 }
 
-function clearStatus(){
-    $("#status").html("");
+/**
+ * Deletes element contents by id or class
+ * @param element id or class
+ */
+function clear(element){
+    $(element).empty();
 }
 
 $(document).on("click", "#view-more", function(event) {

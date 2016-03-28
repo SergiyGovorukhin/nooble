@@ -81,10 +81,15 @@ div {
     width: 50px;
 }
 
+/* TODO: found suitable gif for indexing status */
 .index-process {
     background: url(/img/indexing.gif) no-repeat;
     height: 32px;
     width: 32px;
+    display: inline-block;
+    color: transparent;
+    margin: 7px auto;
+    position: relative;
 }
 
 .result-text {

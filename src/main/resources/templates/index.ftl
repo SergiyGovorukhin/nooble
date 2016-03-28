@@ -5,13 +5,13 @@
 <head>
     <title>Index - ${appName!"nooble"}</title>
     <link rel="stylesheet" type="text/css" media="all" href="/css/styles.css" />
-<#--    <link rel="stylesheet" type="text/css" media="all" href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css" />-->
-    <script type="text/javascript" src="/js/script.js" ></script>
     <#import "/spring.ftl" as spring/>
     <#import "/message.ftl" as message/>
 </head>
 
 <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/script.js" ></script>
 
     <div class="nooble">
         nooble
